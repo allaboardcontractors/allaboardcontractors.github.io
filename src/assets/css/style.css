@@ -351,6 +351,9 @@ p{margin:0}
 .quote__job{color:var(--muted);font-size:.95rem}
 .testimonial-invite{padding:22px 24px;background:var(--tint);border-left:4px solid var(--yellow);border-radius:6px;font-weight:500;max-width:62ch}
 .testimonial-invite a{color:var(--blue);font-weight:700}
+.quote__stars{color:#d9a400;font-size:1.15rem;letter-spacing:2px;margin:0 0 10px}
+.review-cta{margin-top:28px}
+.review-note{color:var(--muted);margin-top:20px}
 @media (max-width:860px){.quotes{grid-template-columns:1fr}}
 
 /* ---------- Booking calendar ---------- */
