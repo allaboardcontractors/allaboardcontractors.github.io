@@ -100,6 +100,78 @@
     syncArrows();
   }
 
+  /* Client reviews: read the published review sheet and show them, newest first */
+  var reviewList = document.getElementById('client-reviews');
+  var reviewNote = document.getElementById('review-note');
+  if (reviewList && reviewList.getAttribute('data-csv')) {
+    fetch(reviewList.getAttribute('data-csv')).then(function(r){
+      if (!r.ok) { throw new Error('reviews feed not ready'); }
+      return r.text();
+    }).then(function(text){
+      var rows = parseCsv(text);
+      if (rows.length < 2) { throw new Error('no reviews yet'); }
+      var head = rows[0];
+      var iName = head.indexOf('Your name');
+      var iWork = head.indexOf('What work did we do for you?');
+      var iStars = head.indexOf('How many stars?');
+      var iText = head.indexOf('Your review');
+      var iCity = head.indexOf('City');
+      var shown = 0;
+      for (var r = rows.length - 1; r >= 1; r--) {
+        var row = rows[r];
+        var name = (row[iName] || '').trim();
+        var text = (row[iText] || '').trim();
+        if (!name || !text) { continue; }
+        var stars = parseInt(row[iStars], 10) || 0;
+        var work = (row[iWork] || '').trim();
+        var city = (row[iCity] || '').trim();
+        var li = document.createElement('li');
+        li.className = 'quote';
+        var starLine = document.createElement('p');
+        starLine.className = 'quote__stars';
+        starLine.setAttribute('aria-label', stars + ' out of 5 stars');
+        starLine.textContent = '★★★★★'.slice(0, stars) + '☆☆☆☆☆'.slice(0, 5 - stars);
+        var quote = document.createElement('blockquote');
+        quote.textContent = text;
+        var who = document.createElement('p');
+        who.className = 'quote__name';
+        who.textContent = name;
+        var job = document.createElement('p');
+        job.className = 'quote__job';
+        job.textContent = [work, city].filter(Boolean).join(' · ');
+        li.appendChild(starLine);
+        li.appendChild(quote);
+        li.appendChild(who);
+        if (job.textContent) { li.appendChild(job); }
+        reviewList.appendChild(li);
+        shown++;
+      }
+      if (!shown) { throw new Error('no reviews yet'); }
+      if (reviewNote) { reviewNote.hidden = true; }
+    }).catch(function(){
+      if (reviewNote) { reviewNote.textContent = 'Be the first to leave a review.'; }
+    });
+    function parseCsv(text){
+      var rows = [];
+      var row = [], cur = '', inQ = false;
+      for (var i = 0; i < text.length; i++) {
+        var c = text[i];
+        if (inQ) {
+          if (c === '"') {
+            if (text[i + 1] === '"') { cur += '"'; i++; } else { inQ = false; }
+          } else { cur += c; }
+        } else if (c === '"') { inQ = true; }
+        else if (c === ',') { row.push(cur); cur = ''; }
+        else if (c === '\n' || c === '\r') {
+          if (c === '\r' && text[i + 1] === '\n') { i++; }
+          row.push(cur); cur = ''; rows.push(row); row = [];
+        } else { cur += c; }
+      }
+      if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+      return rows;
+    }
+  }
+
   /* "Get an estimate" links preselect the service in the form */
   var serviceSelect = document.getElementById('f-service');
   if (serviceSelect) {
