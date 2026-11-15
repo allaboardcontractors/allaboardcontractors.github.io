@@ -158,7 +158,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>{{ homepage.testimonials.heading }}</h2>
-        <p>We add new reviews here as customers share them.</p>
+        <p>Real reviews from real customers, newest first.</p>
       </div>
       {% if homepage.testimonials.items and homepage.testimonials.items | length %}
       <ul class="quotes">
@@ -170,11 +170,10 @@
         </li>
         {% endfor %}
       </ul>
-      {% else %}
-      <div class="testimonial-invite">
-        <p>Recently had work done by us? Call <a href="tel:{{ site.phone_main_tel }}">{{ site.phone_main }}</a> and tell us about it.</p>
-      </div>
       {% endif %}
+      <ul class="quotes" id="client-reviews" data-csv="{{ site.reviews_csv_url }}"></ul>
+      <p class="review-note" id="review-note">Loading our latest reviews.</p>
+      <p class="review-cta"><a class="btn btn--yellow" href="{{ site.review_form_url }}" target="_blank" rel="noopener">Leave a review</a></p>
     </div>
   </section>
 
