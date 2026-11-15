@@ -1,0 +1,279 @@
+{% extends "layouts/base.njk" %}
+
+{% block content %}
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <svg class="topo" aria-hidden="true"><use href="#topo"/></svg>
+    <div class="wrap">
+      <div class="hero__grid">
+        <div class="hero__inner">
+          <h1 class="manifesto"><span class="lead">{{ homepage.hero.lead }}</span> {{ homepage.hero.rest }}</h1>
+          <div class="hero__cta">
+            <a class="btn btn--blue" href="/book-an-estimate/">{{ homepage.hero.cta_primary }}</a>
+            <a class="btn btn--yellow" href="/invite-us-to-bid/">Invite us to bid</a>
+            <a class="btn btn--line" href="#expertise">{{ homepage.hero.cta_secondary }}</a>
+          </div>
+        </div>
+        <div class="hero__media">
+          <div class="ph"><img src="{{ homepage.hero.image }}" alt="{{ homepage.hero.image_alt }}" onerror="this.remove()"></div>
+        </div>
+      </div>
+      <dl class="stats">
+        {% for stat in homepage.stats %}
+        <div><dt>{{ stat.value }}</dt><dd>{{ stat.label }}</dd></div>
+        {% endfor %}
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ EXPERTISE ============ -->
+  <section class="expertise" id="expertise">
+    <div class="expertise__band">
+      <div class="expertise__photo">
+        <img loading="lazy" src="{{ homepage.expertise.band_image }}" alt="{{ homepage.expertise.band_image_alt }}" onerror="this.remove()">
+      </div>
+      <div class="wrap">
+        <h2>{{ homepage.expertise.band_heading }}</h2>
+        <p>{{ homepage.expertise.band_text }}</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="cards">
+        {% for card in homepage.expertise.cards %}
+        <article class="card">
+          <div class="ph"><img loading="lazy" src="{{ card.image }}" alt="{{ card.image_alt }}" onerror="this.remove()"></div>
+          <div class="card__body">
+            <h3>{{ card.heading }}</h3>
+            <p>{{ card.text }}</p>
+            <ul>
+              {% for item in card.bullets %}
+              <li>{{ item }}</li>
+              {% endfor %}
+            </ul>
+            <a class="textlink" href="#services">{{ card.link_label }}</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <div class="index" id="services">
+        <h3>{{ homepage.expertise.services_heading }}</h3>
+        <ul class="index__list">
+          {% for service in homepage.expertise.services %}
+          <li class="index__row">
+            <span class="index__icon"><svg aria-hidden="true"><use href="#{{ service.icon }}"/></svg></span>
+            <span class="index__name">{{ service.name }}</span>
+            <span class="index__desc">{{ service.desc }}</span>
+            <a class="textlink" href="#contact" data-service="{{ service.name }}">Get an estimate</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED WORK ============ -->
+  <section class="section work" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="work__head">
+        <div>
+          <h2 id="work-title">{{ homepage.projects.heading }}</h2>
+          <p>{{ homepage.projects.intro }}</p>
+        </div>
+        <div class="work__controls">
+          <button type="button" id="work-prev" aria-label="Previous project" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button type="button" id="work-next" aria-label="Next project"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <ul class="track" id="work-track" tabindex="0" aria-label="Featured projects">
+      {% for project in homepage.projects.items %}
+      <li class="slide ph ph--dark">
+        <img loading="lazy" src="{{ project.image }}" alt="{{ project.alt }}" onerror="this.remove()">
+        <div class="slide__text"><span class="slide__tag">{{ project.tag }}</span><h3>{{ project.title }}</h3><p>{{ project.caption }}</p></div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- ============ COMPANY ============ -->
+  <section class="section" id="company">
+    <div class="wrap">
+      <div class="company">
+        <div class="company__media">
+          <div class="ph"><img loading="lazy" src="{{ homepage.about.image }}" alt="{{ homepage.about.image_alt }}" onerror="this.remove()"></div>
+        </div>
+        <div>
+          <h2>{{ homepage.about.heading }}</h2>
+          {% for para in homepage.about.paragraphs %}
+          <p>{{ para }}</p>
+          {% endfor %}
+          <dl class="certs">
+            {% for cert in homepage.about.certs %}
+            <div><dt>{{ cert.abbr }}</dt><dd>{{ cert.full }}</dd></div>
+            {% endfor %}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICE AREA ============ -->
+  <section class="section" id="service-area">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>{{ homepage.service_area.heading }}</h2>
+        <p>{{ homepage.service_area.intro }}</p>
+      </div>
+      <ul class="areas">
+        {% for city in homepage.service_area.cities %}
+        <li>{{ city }}</li>
+        {% endfor %}
+      </ul>
+      <p class="areas__note">{{ homepage.service_area.note }}</p>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="section section--tint" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>{{ homepage.process.heading }}</h2>
+        <p>{{ homepage.process.intro }}</p>
+      </div>
+      <ol class="rail">
+        {% for step in homepage.process.steps %}
+        <li>
+          <span class="rail__n">{{ step.n }}</span>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.text }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="section" id="testimonials">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>{{ homepage.testimonials.heading }}</h2>
+        <p>We add new reviews here as customers share them.</p>
+      </div>
+      {% if homepage.testimonials.items and homepage.testimonials.items | length %}
+      <ul class="quotes">
+        {% for item in homepage.testimonials.items %}
+        <li class="quote">
+          <blockquote>{{ item.quote }}</blockquote>
+          <p class="quote__name">{{ item.name }}</p>
+          <p class="quote__job">{{ item.job }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="testimonial-invite">
+        <p>Recently had work done by us? Call <a href="tel:{{ site.phone_main_tel }}">{{ site.phone_main }}</a> and tell us about it.</p>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ============ NEXT STEPS ============ -->
+  <section class="section" aria-labelledby="next-title">
+    <div class="wrap">
+      <div class="next">
+        <div class="next__body">
+          <svg class="topo" aria-hidden="true"><use href="#topo"/></svg>
+          <h2 id="next-title">{{ homepage.capability.heading }}</h2>
+          <p>{{ homepage.capability.text }}</p>
+          <div class="next__cta">
+            <a class="btn btn--yellow" href="{{ homepage.capability.statement }}" target="_blank" rel="noopener">View our capability statement</a>
+            <a class="btn btn--ghost" href="/invite-us-to-bid/">Invite us to bid</a>
+            <a class="btn btn--ghost" href="tel:{{ site.phone_main_tel }}">Call {{ site.phone_main }}</a>
+          </div>
+        </div>
+        <div class="ph ph--dark"><img loading="lazy" src="{{ homepage.capability.image }}" alt="{{ homepage.capability.image_alt }}" onerror="this.remove()"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section" id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="faq">
+        <div class="faq__intro">
+          <h2>{{ homepage.faq.heading }}</h2>
+          <p>{{ homepage.faq.intro }}</p>
+        </div>
+        <div>
+          {% for item in homepage.faq.items %}
+          <details{% if item.open %} open{% endif %}>
+            <summary>{{ item.question }}</summary>
+            <p>{{ item.answer }}</p>
+          </details>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section section--tint" id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2>{{ homepage.contact.heading }}</h2>
+          <p class="contact__lead">{{ homepage.contact.lead }}</p>
+          <ul class="contact__list">
+            <li><small>Phone</small><a href="tel:{{ site.phone_main_tel }}">{{ site.phone_main }}</a></li>
+            <li><small>Phone</small><a href="tel:{{ site.phone_second_tel }}">{{ site.phone_second }}</a></li>
+            <li><small>Email</small><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li><small>Office</small><address>{{ site.office_street }}<br>{{ site.office_city }}</address></li>
+          </ul>
+        </div>
+
+        <form class="form" id="estimate-form" name="estimate-request" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/estimate-received/" enctype="multipart/form-data" novalidate>
+          <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
+          <div class="form__grid">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+            </div>
+            <div class="field">
+              <label for="f-email">Email (optional)</label>
+              <input id="f-email" name="email" type="email" autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="f-service">Service</label>
+              <select id="f-service" name="service">
+                {% for service in homepage.expertise.services %}
+                <option>{{ service.name }}</option>
+                {% endfor %}
+                <option>Something else</option>
+              </select>
+            </div>
+            <div class="field field--full">
+              <label for="f-where">Project address or ZIP code</label>
+              <input id="f-where" name="where" autocomplete="street-address">
+            </div>
+            <div class="field field--full">
+              <label for="f-details">What do you need done?</label>
+              <textarea id="f-details" name="details" placeholder="Size of the lot, length of fence, what needs to be removed, your timeline"></textarea>
+            </div>
+            <div class="field field--full">
+              <label for="f-photos">Photos of the job (optional)</label>
+              <input id="f-photos" name="photos" type="file" accept="image/*" multiple>
+            </div>
+          </div>
+          <button class="btn btn--blue" type="submit">Send my request</button>
+          <p class="form__note">We will get back to you to schedule your estimate. If you would rather talk now, call (281) 938-9550.</p>
+          <p class="form__status" id="form-status" role="status" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+{% endblock %}

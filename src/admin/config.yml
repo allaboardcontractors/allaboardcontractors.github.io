@@ -1,0 +1,262 @@
+backend:
+  name: git-gateway
+  branch: main
+
+site_url: https://www.allaboardcontractors.com
+display_url: https://www.allaboardcontractors.com
+
+media_folder: src/images
+public_folder: /images
+
+editorial_workflow: false
+
+collections:
+  - name: site
+    label: Site Settings
+    label_singular: Site Setting
+    files:
+      - name: settings
+        label: Contact and business details
+        file: src/_data/site.json
+        format: json
+        fields:
+          - { name: name, label: Business name, widget: string }
+          - { name: domain, label: Website address, widget: string, hint: "Full address, starting with https://" }
+          - { name: phone_main, label: "Main phone", widget: string, hint: "Shown everywhere on the site" }
+          - { name: phone_main_tel, label: "Main phone link", widget: string, hint: "Same number, digits only with +1 at the front. Change this too if the main phone changes." }
+          - { name: phone_second, label: "Second phone", widget: string, hint: "James's line" }
+          - { name: phone_second_tel, label: "Second phone link", widget: string, hint: "Same number, digits only with +1 at the front. Change this too if the second phone changes." }
+          - { name: email, label: Email, widget: string }
+          - { name: office_street, label: "Office street", widget: string }
+          - { name: office_city, label: "Office city, state and ZIP", widget: string }
+          - { name: tagline, label: Tagline, widget: text, hint: "Shown under the logo in the footer" }
+          - { name: facebook, label: Facebook page link, widget: string, required: false }
+          - { name: instagram, label: Instagram page link, widget: string, required: false }
+          - { name: linkedin, label: LinkedIn page link, widget: string, required: false }
+
+  - name: homepage
+    label: Homepage
+    label_singular: Homepage
+    files:
+      - name: content
+        label: Homepage content
+        file: src/_data/homepage.json
+        format: json
+        fields:
+          - name: hero
+            label: Top of the page
+            widget: object
+            collapsed: true
+            fields:
+              - { name: lead, label: "Headline, first part", widget: string }
+              - { name: rest, label: "Headline, rest", widget: text }
+              - { name: image, label: "Main photo", widget: image }
+              - { name: image_alt, label: "Main photo description", widget: string, hint: "Describes the photo for screen readers and search engines" }
+              - { name: cta_primary, label: "First button text", widget: string }
+              - { name: cta_secondary, label: "Second button text", widget: string }
+          - name: stats
+            label: Numbers row
+            widget: list
+            collapsed: true
+            fields:
+              - { name: value, label: Number, widget: string }
+              - { name: label, label: Words under the number, widget: string }
+          - name: expertise
+            label: Our expertise
+            widget: object
+            collapsed: true
+            fields:
+              - { name: band_heading, label: Heading, widget: string }
+              - { name: band_text, label: "Intro text", widget: text }
+              - { name: band_image, label: "Background photo", widget: image }
+              - { name: band_image_alt, label: "Background photo description", widget: string, required: false }
+              - { name: services_heading, label: "Services list heading", widget: string }
+              - name: cards
+                label: Service cards
+                widget: list
+                collapsed: true
+                fields:
+                  - { name: heading, label: Heading, widget: string }
+                  - { name: text, label: Text, widget: text }
+                  - { name: image, label: Photo, widget: image }
+                  - { name: image_alt, label: "Photo description", widget: string }
+                  - name: bullets
+                    label: Bullet points
+                    widget: list
+                    hint: One bullet point per line
+                  - { name: link_label, label: "Link text", widget: string }
+              - name: services
+                label: Services list
+                widget: list
+                collapsed: true
+                fields:
+                  - { name: name, label: "Service name", widget: string }
+                  - { name: desc, label: Description, widget: text }
+                  - name: icon
+                    label: Icon
+                    widget: select
+                    options:
+                      - { label: Land clearing, value: i-land }
+                      - { label: Demolition, value: i-demo }
+                      - { label: Concrete, value: i-concrete }
+                      - { label: Fencing, value: i-fence }
+                      - { label: Landscaping, value: i-leaf }
+                      - { label: Tree, value: i-tree }
+                      - { label: Property, value: i-property }
+          - name: projects
+            label: Featured projects
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: intro, label: "Intro text", widget: text }
+              - name: items
+                label: Projects
+                widget: list
+                collapsed: true
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: image, label: Photo, widget: image }
+                  - { name: alt, label: "Photo description", widget: string }
+                  - name: tag
+                    label: Type of work
+                    widget: select
+                    options: [Fencing, Concrete, Demolition, Land clearing]
+                  - { name: title, label: Title, widget: string }
+                  - { name: caption, label: Caption, widget: text }
+          - name: about
+            label: About the company
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - name: paragraphs
+                label: Paragraphs
+                widget: list
+                hint: One paragraph per line
+              - { name: image, label: Photo, widget: image }
+              - { name: image_alt, label: "Photo description", widget: string }
+              - name: certs
+                label: Certifications
+                widget: list
+                fields:
+                  - { name: abbr, label: "Short name", widget: string }
+                  - { name: full, label: "Full name", widget: string }
+          - name: service_area
+            label: Where we work
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: intro, label: "Intro text", widget: text }
+              - name: cities
+                label: Cities
+                widget: list
+                hint: One city per line
+              - { name: note, label: "Note under the cities", widget: text }
+          - name: process
+            label: Process
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: intro, label: "Intro text", widget: text }
+              - name: steps
+                label: Steps
+                widget: list
+                collapsed: true
+                fields:
+                  - { name: n, label: "Step label", widget: string, hint: "Example: Step 1" }
+                  - { name: title, label: Title, widget: string }
+                  - { name: text, label: Text, widget: text }
+          - name: testimonials
+            label: What our customers say
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - name: items
+                label: Customer quotes
+                widget: list
+                collapsed: true
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: quote, label: Quote, widget: text }
+                  - { name: name, label: "Customer name", widget: string }
+                  - { name: job, label: "Job done", widget: string }
+          - name: capability
+            label: Capability section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: image, label: Photo, widget: image }
+              - { name: image_alt, label: "Photo description", widget: string }
+              - { name: statement, label: "Capability statement file", widget: image, hint: "The file linked by the View our capability statement button" }
+          - name: faq
+            label: Common questions
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: intro, label: "Intro text", widget: text }
+              - name: items
+                label: Questions
+                widget: list
+                collapsed: true
+                summary: "{{fields.question}}"
+                fields:
+                  - { name: question, label: Question, widget: string }
+                  - { name: answer, label: Answer, widget: text }
+                  - { name: open, label: "Open when the page loads", widget: boolean, required: false, default: false }
+          - name: contact
+            label: Contact section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: lead, label: "Intro text", widget: text }
+          - name: footer_lead
+            label: Footer headline
+            widget: object
+            collapsed: true
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: text, label: Text, widget: text }
+
+  - name: pages
+    label: Pages
+    label_singular: Page
+    folder: src/pages
+    create: true
+    slug: "{{slug}}"
+    preview_path: "{{slug}}"
+    fields:
+      - { name: title, label: "Page title", widget: string }
+      - { name: description, label: "Short description", widget: text, required: false, hint: "Shown in search results" }
+      - { name: intro, label: "Intro text", widget: text, required: false, hint: "Shown under the title at the top of the page" }
+      - name: layout
+        label: "Page style"
+        widget: select
+        default: layouts/page.njk
+        options:
+          - { label: Standard page, value: layouts/page.njk }
+          - { label: Before and After page, value: layouts/before-after.njk }
+      - { name: body, label: "Page text", widget: markdown, required: false }
+      - name: pairs
+        label: Before and after pairs
+        widget: list
+        collapsed: true
+        required: false
+        hint: Only used when the page style is Before and After page. Add one entry per job, with its before photo first and its after photo second.
+        summary: "{{fields.before_title}}"
+        fields:
+          - { name: before_image, label: "Before photo", widget: image }
+          - { name: before_alt, label: "Before photo description", widget: string }
+          - { name: before_title, label: "Before title", widget: string }
+          - { name: before_caption, label: "Before caption", widget: text }
+          - { name: after_image, label: "After photo", widget: image }
+          - { name: after_alt, label: "After photo description", widget: string }
+          - { name: after_title, label: "After title", widget: string }
+          - { name: after_caption, label: "After caption", widget: text }

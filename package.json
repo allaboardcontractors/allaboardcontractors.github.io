@@ -1,0 +1,1 @@
+{"description":"All Aboard Contractors website. Static site built with Eleventy, edited with Decap CMS, hosted on Netlify.","devDependencies":{"@11ty/eleventy":"^3.0.0"},"engines":{"node":">=18"},"name":"all-aboard-contractors-website","private":true,"scripts":{"build":"eleventy","start":"eleventy --serve"},"version":"1.0.0"}

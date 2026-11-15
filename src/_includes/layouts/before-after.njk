@@ -1,0 +1,44 @@
+{% extends "layouts/base.njk" %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <h1>{{ title }}</h1>
+    {% if intro %}<p>{{ intro }}</p>{% endif %}
+  </div>
+</section>
+<section class="page-body">
+  <div class="wrap">
+    {{ content | safe }}
+    {% for pair in pairs %}
+    <div class="ba-pair">
+      <div class="compare" data-compare style="--pos:50%">
+        <div class="compare__frame">
+          <img class="compare__img compare__img--after" loading="lazy" src="{{ pair.after_image }}" alt="{{ pair.after_alt }}" onerror="this.remove()">
+          <img class="compare__img compare__img--before" loading="lazy" src="{{ pair.before_image }}" alt="{{ pair.before_alt }}" onerror="this.remove()">
+          <span class="compare__tag compare__tag--before">Before</span>
+          <span class="compare__tag compare__tag--after">After</span>
+          <span class="compare__divider" aria-hidden="true"></span>
+          <input class="compare__range" id="compare-{{ loop.index }}" type="range" min="0" max="100" value="50" step="1" aria-label="Compare before and after photos for {{ pair.after_title }}">
+        </div>
+        <p class="compare__hint">Drag the slider to compare the before and after photos.</p>
+      </div>
+      <div class="ba-captions">
+        <div>
+          <span class="ba-tag">Before</span>
+          <h3>{{ pair.before_title }}</h3>
+          <p>{{ pair.before_caption }}</p>
+        </div>
+        <div>
+          <span class="ba-tag">After</span>
+          <h3>{{ pair.after_title }}</h3>
+          <p>{{ pair.after_caption }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <p><a class="btn btn--blue" href="/book-an-estimate/">Book a free estimate</a></p>
+  </div>
+</section>
+<script src="/assets/js/compare.js"></script>
+{% endblock %}
