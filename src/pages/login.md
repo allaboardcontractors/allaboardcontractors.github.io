@@ -11,11 +11,17 @@ layout: layouts/page.njk
     <p id="login-error" style="display:none;color:#B00020;margin-top:10px;">That code did not match. Try again.</p>
     <button type="submit" class="btn btn--blue" style="margin-top:16px;">Log in</button>
   </form>
+  <div id="login-success" style="display:none;text-align:center;padding:12px 0;">
+    <p style="font-size:1.25rem;font-weight:700;margin:0 0 8px 0;">Code accepted.</p>
+    <p style="margin:0 0 20px 0;">Tap the button below to open Muse. Then tap All Aboard CRM to open your CRM.</p>
+    <a href="https://muse.ai/artifacts" class="btn btn--blue" style="display:inline-block;text-decoration:none;">Open the CRM</a>
+  </div>
 </div>
 <script>
 (function () {
   var CODE_HASH = "a9e1bff2b8e4471adddaa8d56ce4cfd508059be86a03b4d613f281c9fe664ef2";
   var form = document.getElementById("login-form");
+  var success = document.getElementById("login-success");
   var input = document.getElementById("login-code");
   var error = document.getElementById("login-error");
   function hex(buf) {
@@ -30,7 +36,8 @@ layout: layouts/page.njk
     error.style.display = "none";
     crypto.subtle.digest("SHA-256", new TextEncoder().encode(code)).then(function (buf) {
       if (hex(buf) === CODE_HASH) {
-        window.location.href = "https://muse.ai/artifacts";
+        form.style.display = "none";
+        success.style.display = "block";
       } else {
         error.style.display = "block";
         input.value = "";
