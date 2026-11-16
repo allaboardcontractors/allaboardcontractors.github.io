@@ -14,7 +14,7 @@ layout: layouts/page.njk
 </div>
 <script>
 (function () {
-  var CODE_HASH = "48290cf691c41cbc99b2396d2e5313ccfba91987b384e6d8f08b951fa5045e83";
+  var CODE_HASH = "a9e1bff2b8e4471adddaa8d56ce4cfd508059be86a03b4d613f281c9fe664ef2";
   var form = document.getElementById("login-form");
   var input = document.getElementById("login-code");
   var error = document.getElementById("login-error");
