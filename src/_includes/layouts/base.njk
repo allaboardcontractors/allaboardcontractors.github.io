@@ -14,13 +14,13 @@
 <meta name="description" content="{{ description or "All Aboard Contractors is a family-owned, WBE and SBE certified Houston contractor for land clearing, demolition, concrete, fencing, tree services, landscaping and property preservation. Call (281) 938-9550 for a free estimate." }}">
 <link rel="canonical" href="{{ site.domain }}{{ page.url }}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="All Aboard Contractors | Houston site work, concrete and demolition">
-<meta property="og:description" content="Certified WBE and SBE contractor serving Houston and surrounding areas. Concrete, fencing, landscaping, demolition and more. Free estimates.">
+<meta property="og:title" content="{% if title %}{{ title }} | All Aboard Contractors{% else %}All Aboard Contractors | Houston site work, concrete and demolition{% endif %}">
+<meta property="og:description" content="{{ description or "Certified WBE and SBE contractor serving Houston and surrounding areas. Concrete, fencing, landscaping, demolition and more. Free estimates." }}">
 <meta property="og:url" content="{{ site.domain }}{{ page.url }}">
 <meta property="og:image" content="{{ site.domain }}/images/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="All Aboard Contractors | Houston site work, concrete and demolition">
-<meta name="twitter:description" content="Certified WBE and SBE contractor serving Houston and surrounding areas. Concrete, fencing, landscaping, demolition and more. Free estimates.">
+<meta name="twitter:title" content="{% if title %}{{ title }} | All Aboard Contractors{% else %}All Aboard Contractors | Houston site work, concrete and demolition{% endif %}">
+<meta name="twitter:description" content="{{ description or "Certified WBE and SBE contractor serving Houston and surrounding areas. Concrete, fencing, landscaping, demolition and more. Free estimates." }}">
 <meta name="twitter:image" content="{{ site.domain }}/images/og-image.png">
 <meta name="theme-color" content="#1A4B9B">
 {% include "favicon.njk" %}
