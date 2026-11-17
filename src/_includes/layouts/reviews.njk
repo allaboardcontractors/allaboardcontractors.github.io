@@ -1,0 +1,33 @@
+{% extends "layouts/base.njk" %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <h1>{{ title }}</h1>
+    {% if intro %}<p>{{ intro }}</p>{% endif %}
+  </div>
+</section>
+
+<section class="section" id="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>{{ homepage.testimonials.heading }}</h2>
+      <p>Real reviews from real customers, newest first.</p>
+    </div>
+    {% if homepage.testimonials.items and homepage.testimonials.items | length %}
+    <ul class="quotes">
+      {% for item in homepage.testimonials.items %}
+      <li class="quote">
+        <blockquote>{{ item.quote }}</blockquote>
+        <p class="quote__name">{{ item.name }}</p>
+        <p class="quote__job">{{ item.job }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <ul class="quotes" id="client-reviews" data-csv="{{ site.reviews_csv_url }}"></ul>
+    <p class="review-note" id="review-note">Loading our latest reviews.</p>
+    <p class="review-cta"><a class="btn btn--yellow" href="{{ site.review_form_url }}" target="_blank" rel="noopener">Leave a review</a></p>
+  </div>
+</section>
+{% endblock %}
