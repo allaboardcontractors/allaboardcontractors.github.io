@@ -75,6 +75,7 @@ p{margin:0}
 .nav-drop__menu a{display:block;padding:10px 12px;border-bottom:0;border-radius:8px}
 .nav-drop__menu a:hover{background:var(--tint);border-bottom-color:transparent}
 .header-call{min-height:44px;padding:8px 20px;font-size:.95rem;white-space:nowrap}
+.nav-call{display:none}
 /* With eight main menu links the header gets tight on smaller laptops, so
    the call button shows just "Call" below 1300px and the number stays in
    the menu and footer. */
@@ -84,6 +85,12 @@ p{margin:0}
 .menu-btn{display:none;min-height:44px;padding:8px 16px;background:none;border:2px solid var(--blue);border-radius:999px;
   font-family:var(--body);font-weight:600;font-size:.95rem;color:var(--blue);cursor:pointer}
 @media (max-width:980px){
+  .site-header .wrap{gap:12px}
+  .brand{gap:10px;min-width:0}
+  .brand__name{font-size:1.12rem;white-space:nowrap}
+  .header-call{flex:none;padding:8px 14px}
+  .menu-btn{flex:none;padding:8px 12px}
+  .nav-call{display:block;font-weight:600;color:var(--blue)}
   .menu-btn{display:inline-flex;align-items:center}
   .nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;align-items:stretch;background:var(--paper);
     border-bottom:1px solid var(--line);padding:8px var(--gutter) 16px}
@@ -96,7 +103,8 @@ p{margin:0}
   .nav-drop__menu a{padding:12px 0 12px 16px}
 }
 @media (max-width:520px){
-  .header-call span{display:none}
+  .header-call{display:none}
+  .brand__name{font-size:1.05rem}
   .brand svg{width:42px;height:44px}
   .brand img{width:56px;height:auto}
 }
