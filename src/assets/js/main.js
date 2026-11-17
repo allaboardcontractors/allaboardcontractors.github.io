@@ -172,6 +172,31 @@
     }
   }
 
+  /* Review form: send a new review to Shante, like the Find a Home form */
+  var reviewForm = document.getElementById('review-form');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var sent = document.getElementById('review-sent');
+      var err = document.getElementById('review-error');
+      if (sent) { sent.hidden = true; }
+      if (err) { err.hidden = true; }
+      var fd = new FormData(reviewForm);
+      fd.set('_subject', 'New All Aboard Contractors review');
+      fd.set('_template', 'table');
+      fd.set('_captcha', 'false');
+      fetch('https://formsubmit.co/ajax/info@shantekelleyrealty.com', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(Object.fromEntries(fd)) })
+        .then(function(r){
+          if (!r.ok) { throw new Error('send failed'); }
+          if (sent) { sent.hidden = false; sent.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+          reviewForm.reset();
+        })
+        .catch(function(){
+          if (err) { err.hidden = false; err.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+        });
+    });
+  }
+
   /* "Get an estimate" links preselect the service in the form */
   var serviceSelect = document.getElementById('f-service');
   if (serviceSelect) {
