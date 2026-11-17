@@ -47,7 +47,7 @@
   nav.addEventListener('click', function(e){
     if (e.target.tagName === 'A'){
       nav.classList.remove('is-open');
-      menuBtn.setAttribute('aria-expanded', false);
+      menuBtn.setAttribute('aria-expanded', 'false');
       menuBtn.textContent = 'Menu';
     }
   });
@@ -176,7 +176,7 @@
       fd.set('_template', 'table');
       fd.set('_captcha', 'false');
       // Notification only. The backend is the source of truth for display.
-      fetch('https://formsubmit.co/ajax/info@shantekelleyrealty.com', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(Object.fromEntries(fd)) }).catch(function(){});
+      fetch('https://formsubmit.co/ajax/shantekelley@allaboardcontractors.com', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(Object.fromEntries(fd)) }).catch(function(){});
       fetch(REVIEWS_API + '/.netlify/functions/submit-review', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(review) })
         .then(function(r){
           if (!r.ok) { throw new Error('send failed'); }
