@@ -47,7 +47,7 @@
   nav.addEventListener('click', function(e){
     if (e.target.tagName === 'A'){
       nav.classList.remove('is-open');
-      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.setAttribute('aria-expanded', false);
       menuBtn.textContent = 'Menu';
     }
   });
@@ -135,7 +135,9 @@
   function loadReviews(){
     if (!reviewList) { return; }
     reviewList.innerHTML = '';
-    fetch(REVIEWS_API + '/.netlify/functions/list-reviews').then(function(r){
+    // cache: 'no-store' so the browser never serves a stale list. A cached
+    // empty list made a just submitted review look missing for a minute or two.
+    fetch(REVIEWS_API + '/.netlify/functions/list-reviews', { cache: 'no-store' }).then(function(r){
       if (!r.ok) { throw new Error('reviews feed not ready'); }
       return r.json();
     }).then(function(data){
