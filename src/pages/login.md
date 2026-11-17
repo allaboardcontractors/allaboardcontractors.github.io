@@ -13,7 +13,7 @@ layout: layouts/page.njk
   </form>
   <div id="login-success" style="display:none;text-align:center;padding:12px 0;">
     <p style="font-size:1.25rem;font-weight:700;margin:0 0 8px 0;">Code accepted.</p>
-    <p style="margin:0 0 20px 0;">Tap the button below to open Muse. Then tap All Aboard CRM to open your CRM.</p>
+    <p style="margin:0 0 20px 0;">Tap the button below to open Muse. Then tap the shapes icon at the bottom of the screen and tap All Aboard CRM.</p>
     <a href="https://muse.ai/artifacts" class="btn btn--blue" style="display:inline-block;text-decoration:none;">Open the CRM</a>
   </div>
 </div>
