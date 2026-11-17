@@ -1,4 +1,6 @@
 (function(){
+  /* Review backend base URL. Set this to the live Netlify site URL after deploy. */
+  var REVIEWS_API = "https://glittering-druid-e3a70e.netlify.app";
   var root = document.documentElement;
   root.classList.add('js');
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -100,79 +102,57 @@
     syncArrows();
   }
 
-  /* Client reviews: read the published review sheet and show them, newest first */
+  /* Client reviews: read them from the review backend, newest first */
   var reviewList = document.getElementById('client-reviews');
   var reviewNote = document.getElementById('review-note');
-  if (reviewList && reviewList.getAttribute('data-csv')) {
-    fetch(reviewList.getAttribute('data-csv')).then(function(r){
+  function showReviewNote(){
+    if (reviewNote) { reviewNote.textContent = 'Be the first to leave a review.'; reviewNote.hidden = false; }
+  }
+  function renderReview(item){
+    var stars = parseInt(item.stars, 10) || 0;
+    if (stars < 0) { stars = 0; }
+    if (stars > 5) { stars = 5; }
+    var li = document.createElement('li');
+    li.className = 'quote';
+    var starLine = document.createElement('p');
+    starLine.className = 'quote__stars';
+    starLine.setAttribute('aria-label', stars + ' out of 5 stars');
+    starLine.textContent = '★★★★★'.slice(0, stars) + '☆☆☆☆☆'.slice(0, 5 - stars);
+    var quote = document.createElement('blockquote');
+    quote.textContent = item.text || '';
+    var who = document.createElement('p');
+    who.className = 'quote__name';
+    who.textContent = item.name || '';
+    var job = document.createElement('p');
+    job.className = 'quote__job';
+    job.textContent = [item.work, item.city].filter(Boolean).join(' · ');
+    li.appendChild(starLine);
+    li.appendChild(quote);
+    li.appendChild(who);
+    if (job.textContent) { li.appendChild(job); }
+    return li;
+  }
+  function loadReviews(){
+    if (!reviewList) { return; }
+    reviewList.innerHTML = '';
+    fetch(REVIEWS_API + '/.netlify/functions/list-reviews').then(function(r){
       if (!r.ok) { throw new Error('reviews feed not ready'); }
-      return r.text();
-    }).then(function(text){
-      var rows = parseCsv(text);
-      if (rows.length < 2) { throw new Error('no reviews yet'); }
-      var head = rows[0];
-      var iName = head.indexOf('Your name');
-      var iWork = head.indexOf('What work did we do for you?');
-      var iStars = head.indexOf('How many stars?');
-      var iText = head.indexOf('Your review');
-      var iCity = head.indexOf('City');
-      var shown = 0;
-      for (var r = rows.length - 1; r >= 1; r--) {
-        var row = rows[r];
-        var name = (row[iName] || '').trim();
-        var text = (row[iText] || '').trim();
-        if (!name || !text) { continue; }
-        var stars = parseInt(row[iStars], 10) || 0;
-        var work = (row[iWork] || '').trim();
-        var city = (row[iCity] || '').trim();
-        var li = document.createElement('li');
-        li.className = 'quote';
-        var starLine = document.createElement('p');
-        starLine.className = 'quote__stars';
-        starLine.setAttribute('aria-label', stars + ' out of 5 stars');
-        starLine.textContent = '★★★★★'.slice(0, stars) + '☆☆☆☆☆'.slice(0, 5 - stars);
-        var quote = document.createElement('blockquote');
-        quote.textContent = text;
-        var who = document.createElement('p');
-        who.className = 'quote__name';
-        who.textContent = name;
-        var job = document.createElement('p');
-        job.className = 'quote__job';
-        job.textContent = [work, city].filter(Boolean).join(' · ');
-        li.appendChild(starLine);
-        li.appendChild(quote);
-        li.appendChild(who);
-        if (job.textContent) { li.appendChild(job); }
-        reviewList.appendChild(li);
-        shown++;
-      }
-      if (!shown) { throw new Error('no reviews yet'); }
+      return r.json();
+    }).then(function(data){
+      var reviews = (data && data.reviews) || [];
+      if (!reviews.length) { showReviewNote(); return; }
+      reviews.forEach(function(item){
+        if (!item.name || !item.text) { return; }
+        reviewList.appendChild(renderReview(item));
+      });
       if (reviewNote) { reviewNote.hidden = true; }
     }).catch(function(){
-      if (reviewNote) { reviewNote.textContent = 'Be the first to leave a review.'; }
+      showReviewNote();
     });
-    function parseCsv(text){
-      var rows = [];
-      var row = [], cur = '', inQ = false;
-      for (var i = 0; i < text.length; i++) {
-        var c = text[i];
-        if (inQ) {
-          if (c === '"') {
-            if (text[i + 1] === '"') { cur += '"'; i++; } else { inQ = false; }
-          } else { cur += c; }
-        } else if (c === '"') { inQ = true; }
-        else if (c === ',') { row.push(cur); cur = ''; }
-        else if (c === '\n' || c === '\r') {
-          if (c === '\r' && text[i + 1] === '\n') { i++; }
-          row.push(cur); cur = ''; rows.push(row); row = [];
-        } else { cur += c; }
-      }
-      if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
-      return rows;
-    }
   }
+  loadReviews();
 
-  /* Review form: send a new review to Shante, like the Find a Home form */
+  /* Review form: save the review to the backend and email Shante, like the Find a Home form */
   var reviewForm = document.getElementById('review-form');
   if (reviewForm) {
     reviewForm.addEventListener('submit', function(e){
@@ -182,14 +162,25 @@
       if (sent) { sent.hidden = true; }
       if (err) { err.hidden = true; }
       var fd = new FormData(reviewForm);
+      var data = Object.fromEntries(fd);
+      var review = {
+        name: String(data['Your name'] || '').trim(),
+        city: String(data['City'] || '').trim(),
+        work: String(data['What work did we do for you?'] || '').trim(),
+        stars: parseInt(data['How many stars?'], 10),
+        text: String(data['Your review'] || '').trim()
+      };
       fd.set('_subject', 'New All Aboard Contractors review');
       fd.set('_template', 'table');
       fd.set('_captcha', 'false');
-      fetch('https://formsubmit.co/ajax/info@shantekelleyrealty.com', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(Object.fromEntries(fd)) })
+      // Notification only. The backend is the source of truth for display.
+      fetch('https://formsubmit.co/ajax/info@shantekelleyrealty.com', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(Object.fromEntries(fd)) }).catch(function(){});
+      fetch(REVIEWS_API + '/.netlify/functions/submit-review', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(review) })
         .then(function(r){
           if (!r.ok) { throw new Error('send failed'); }
           if (sent) { sent.hidden = false; sent.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
           reviewForm.reset();
+          loadReviews();
         })
         .catch(function(){
           if (err) { err.hidden = false; err.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
